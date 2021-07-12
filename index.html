@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Watcherererererer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css"/>
+  </head>
+  <body>
+    <div class="no-padding shadow container-fluid" style="background: #fff">
+      <div class="row">
+        <div class="col-md-12 text-center">
+        <br/>
+          <h3 class="text-center">Realtime Emergency Monitoring</h3>
+          <!-- <small class="text-center">Send help! Charot!</small> -->
+        </div>
+      </div>
+    </div>
+    <br/>
+    <div class="container shadow">
+      <div class="row">
+        <pre id="co"></pre>
+        <div class="col-md-6 card tran no-border">
+          <!-- <div class="card"> -->
+            <div class="card-body list-group" id="list">
+              <h5 class="card-title">Emergency Messages</h5>
+              <hr/>
+              <div id="msg-list">
+
+
+
+                <!-- <div  class="as list-group-item list-group-item-action" data-long="120.987249" data-lat="14.6178249" data-user="Melquidez 1">
+                  <p class="card-text small"><b>Name:</b> <i>Melquidez Lazaro</i></p>
+                  <span>Test Message 1</span>
+                </div> -->
+              </div>
+            </div>
+          <!-- </div> -->
+        </div>
+        <div class="col-md-6 card no-border">
+          <div class="card-body">
+            <h5 class="card-title">Location</h5>
+            <hr/>
+            <div id="map"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <br/>
+    <footer id="testpre" class=""></footer>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+  <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjbVnyWt56-UODgtJK0JpT96s3QY9ZfRs&callback=initMap&libraries=&v=weekly" defer></script>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyCjbVnyWt56-UODgtJK0JpT96s3QY9ZfRs",
+          authDomain: "pulseria-dbb04.firebaseapp.com",
+          databaseURL: "https://pulseria-dbb04-default-rtdb.firebaseio.com",
+          projectId: "pulseria-dbb04",
+          storageBucket: "pulseria-dbb04.appspot.com",
+          messagingSenderId: "375277892160",
+          appId: "1:375277892160:web:a5d04504008c1583aa65a5"
+        };
+
+      let storage = window.localStorage;
+      let long = 0
+      let late = 0
+      let name = "";
+      // let data;
+
+      // jqueryt
+
+      $(document).ready(function(){
+        // $('.as').each(function(i,obj){
+          $('#msg-list').on('click','div.as',function(e){
+            long = $(this).data('long');
+            late = $(this).data('lat');
+            name = $(this).data('user');
+            $('.as.active').removeClass('active');
+            $(this).addClass('active')
+            initMap();
+            console.log('sadsadasd');
+          })
+        // });
+
+
+          firebase.initializeApp(firebaseConfig);
+          const preOb = document.getElementById('co');
+
+          /*const dbRef = firebase.database().ref('pulseria');
+          dbRef.once('value',snap=>{
+            snap.forEach(function(data){
+              let key = data.key;
+              let val = data.val();
+              // console.log(key + '_' + val.name)
+
+              $('#msg-list').append('<div  class="as list-group-item list-group-item-action" data-long="' + val.long + '" data-lat="' + val.lat + '" data-user="Melquidez 1"> <p class="card-text small"><b>Name:</b> <i>' + val.name + '</i></p> <span>' + val.message + '</span> </div>')
+            })
+          });*/
+          const dbRefChild = firebase.database().ref('pulseria');
+          dbRefChild.on('child_added',function(data){
+            let key = data.key;
+              let val = data.val();
+              $.ajax({
+                url:"http://192.168.43.4/msg",
+                type:"GET",
+                success:function(data){
+                  console.log(data);
+                }
+              })
+            $('#msg-list').append('<div  class="as list-group-item list-group-item-action" data-long="' + val.long + '" data-lat="' + val.lat + '" data-user="Melquidez 1"> <p class="card-text small"><b>Name:</b> <i>' + val.name + '</i></p> <span>' + val.message + '</span> </div>')
+          });
+
+      })
+
+      //inititate the map
+
+      function initMap() {
+        let coords = { lat: late, lng: long }; // lat,long
+        let map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 13,
+          center: coords,
+        });
+        initMarker(coords,map);
+      }
+
+      // initiate marker.
+      function initMarker(coords,map){
+        new google.maps.Marker({
+          position: coords, map,
+          title: "Last known Location of " + name,
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Contacts</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addContact()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item-group>
+    <ion-list>
+      <!--Delete contact on delete-->
+      <button ion-item *ngFor="let contact of contactList">
+        <b>Name: </b>{{contact.name}}
+        <br/>
+        <b># </b><span style="color:red; font-size: 10px;"> {{contact.number}}</span>
+      </button>
+      <button color="primary" ion-item *ngIf="contactList.length > 0" (click)="clearContact()">
+        <b>Clear</b>
+      </button>
+    </ion-list>
+  </ion-item-group>
+
+</ion-content>

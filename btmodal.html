@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar color="danger">
+    <ion-buttons left>
+      <button ion-button icon-only color="royal" (click)="btDismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Devices</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <button ion-item color="light" (click)="btDismiss(btList.address)" *ngFor="let btList of BTList">{{btList.name}}</button>
+  </ion-list>
+
+</ion-content>

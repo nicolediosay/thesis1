@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-navbar [color]="(btConnected) ? 'primary' : 'danger'">
+    <!--<button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>-->
+    <ion-title>Pulseira</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col col-md-12>
+        <ion-list>
+          <ion-item>
+            <ion-label *ngIf="!fullname" floating>Please enter your name</ion-label>
+            <ion-label *ngIf="fullname" floating>Hi</ion-label>
+            <!--<ion-label floating>Please enter your name</ion-label>-->
+            <ion-input [(ngModel)]="fullname" (focusout)="saveName()" type="text"></ion-input>
+            <!--<ion-input [(ngModel)]="fullname" *ngIf="fullname" readonly type="text"></ion-input>-->
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-md-6>
+        <ion-card class="heart-card">
+          <ion-card-content>
+            <span id="heart"><ion-icon name="pulse"></ion-icon></span>
+            <span>{{(dpm) ? dpm : 0}} dpm</span>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col col-md-6>
+        <ion-card class="heart-card">
+          <ion-card-content>
+            <span id="heart"><ion-icon name="heart"></ion-icon></span>
+            <span>{{(bloodPressure) ? bloodPressure : 0}}%</span>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-md-12>
+        <!--<button ion-button (click)="BTList()" >BT Connect</button>-->
+        <!--<button ion-button [color]="(on == '1') ? 'secondary' : 'primary'" (click)="LEDTest()" >BT Test</button>-->
+        <ion-item-group>
+          <ion-item-divider color="light">
+            Sim Info
+          </ion-item-divider>
+          <ion-list>
+            <!--<p ion-item>
+              <b>Signal:</b> <span>{{(signalData) ? signalData + ' ' + signalRaw : 0}}</span>
+            </p>-->
+            <p ion-item>
+              <!--<b>Carrier:</b> <span>{{simInfo.carrierName}}</span>-->
+              <b>Carrier:</b> <span>{{simCarrier}}</span>
+            </p>
+            <p ion-item>
+              <b>Contry code</b> <span>{{simInfo.countryCode}} +63</span>
+            </p>
+            <p ion-item *ngFor="let card of simInfo.cards">
+              <b>Sim {{(card.simSlotIndex == 0) ? 1 : 2}}:</b> <span>{{card.phoneNumber}}</span>
+            </p>
+          </ion-list>
+          <ion-item-divider color="light">
+            Geolocation
+          </ion-item-divider>
+          <ion-list>
+            <p ion-item><b>Latitude: </b><span>{{latitude}}</span> </p>
+            <p ion-item><b>Longitude: </b><span>{{longitude}}</span> </p>
+          </ion-list>
+        </ion-item-group>
+        <!--<button ion-button secondary (click)="geolocationTest()">Test</button>-->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab right bottom>
+    <button ion-fab color="dark"><ion-icon name="menu"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button color="danger" ion-fab (click)="BTList()">
+        <ion-icon name="bluetooth"></ion-icon>
+        <div class="lab">Bluetooth</div>
+      </button>
+
+
+      <!--<button ion-fab [color]="(on == '1') ? 'secondary' : 'primary'" (click)="LEDTest()">
+        <ion-icon name="md-repeat"></ion-icon>
+        <div class="lab">Test BT Send & Receive</div>
+      </button>-->
+
+      <!--<button color="primary" ion-fab (click)="geolocationTest()">
+        <ion-icon name="md-locate"></ion-icon>
+        <div class="lab">Test Locate & Send Msg</div>
+      </button>-->
+
+
+      <button color="primary" ion-fab (click)="contacts()">
+        <ion-icon name="contact"></ion-icon>
+        <div class="lab">Contacts</div>
+      </button>
+    </ion-fab-list>
+
+
+  </ion-fab>
+
+  <!--<ion-fab right bottom>
+    <button ion-fab color="dark" (click)="geolocationTest()">
+      <ion-icon name="notifications"></ion-icon>c
+    </button>
+  </ion-fab>-->
+
+
+</ion-content>
